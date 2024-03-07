@@ -60,29 +60,7 @@ app.get('/api/produit', async(request, response) => {
 });
 
 
-// get produit
-app.get('/api/panier', async(request, response) => {
-    // Si utilisateur est pas connecté, on retourne une erreur 401
-    if(request.user === undefined){
-        response.status(401).json({message: 'Utilisateur non connecté.'});
-        return;
-    }
 
-    const user = request.user;
-    const panier = await getUtilisateurPanier(user.id_utilisateur);
-    if(panier === undefined){
-        // si le panier n'existe pas, on retourne un tableau vide
-        response.status(200).json([]);
-        return;
-    }
-    const result = await getProduitPanier(panier.id_commande);
-    // map pour ajouter la quantité
-    const produits = result.produits.map(produit => {
-        produit.quantite = result.panier_produits.find(panier_produit => panier_produit.id_produit === produit.id_produit).quantite;
-        return produit;
-    });
-    response.json(produits);
-});
 
 app.post('/api/panierProduit', async(request, response) => {
     // Si utilisateur est pas connecté, on retourne une erreur 401
