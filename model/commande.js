@@ -73,3 +73,15 @@ export async function supprimerPanier(id_panier){
     await connection.run('DELETE FROM commande WHERE id_commande = ?', [id_panier]);
 }
 
+// get les commandes soumises
+export async function getCommandesSoumises(){
+    const connection = await connectionPromise;
+    const commandes = await connection.all('SELECT * FROM commande WHERE id_etat_commande != ?', [1]);
+    return commandes;
+}
+
+// modifier etat commande
+export async function modifierEtatCommande(id_commande, id_etat_commande){
+    const connection = await connectionPromise;
+    await connection.run('UPDATE commande SET id_etat_commande = ? WHERE id_commande = ?', [id_etat_commande, id_commande]);
+}
