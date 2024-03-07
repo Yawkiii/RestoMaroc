@@ -123,14 +123,3 @@ function onCommandModifier(event) {
 
 
 
-// on attend que le DOM soit chargé pour ajouter les écouteurs d'événements
-window.addEventListener('load', function () {
-    const btns = document.querySelectorAll('.btn-modifier-etat');
-    btns.forEach(function (btn) {
-        btn.addEventListener('click', onUpdateCommandeState);
-    });
-
-    let eventSource = new EventSource('/api/stream');
-    eventSource.addEventListener('nouvelleCommande', onNovelleCommande);
-    eventSource.addEventListener('commandeModifiee', onCommandModifier);;
-});
