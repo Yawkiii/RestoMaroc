@@ -42,10 +42,15 @@ passport.use(new Strategy(config, async (courriel, motDePasse, done) => {
         if (!valide) {
             return done(null, false, { error: 'mauvais_mot_de_passe' });
         }
+        // Vérification si l'utilisateur est un administrateur
+        const isAdmin = (utilisateur.id_type_utilisateur === 2); 
+        
+        // Ajouter la propriété isAdmin à l'objet utilisateur
+        const utilisateurAvecAdmin = { ...utilisateur, isAdmin };
 
+        return done(null, utilisateurAvecAdmin)
         // Si les mot de passe concorde, on retourne
         // l'information de l'utilisateur au serveur
-        return done(null, utilisateur);
     }
     catch (error) {
         return done(error);
